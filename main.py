@@ -299,9 +299,9 @@ def contact():
     if request.method == "POST":
         data = request.form
         send_email(data["name"], data["email"], data["phone"], data["message"])
-        return render_template("contact.html", msg_sent=True)
+        return render_template("contact.html", year=year, msg_sent=True)
     return render_template("contact.html", year=year, msg_sent=False)
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=False, host="0.0.0.0")
