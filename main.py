@@ -97,7 +97,7 @@ def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         # If id is not 1 then return abort with 403 error
-        if current_user.id != 1:
+        if not current_user.is_authenticated or current_user.id != 1:
             return abort(403)
         # Otherwise continue with the route function
         return f(*args, **kwargs)
@@ -222,6 +222,7 @@ def add_new_post():
 
 # Use a decorator so only an admin user can edit a post
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+@admin_only
 def edit_post(post_id):
     year = date.today().strftime("%Y")
     post = db.get_or_404(BlogPost, post_id)
